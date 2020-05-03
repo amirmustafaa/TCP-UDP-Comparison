@@ -11,12 +11,12 @@ public class sender {
 
     public static void main(String args[]) throws Exception {
 		
-		InetAddress host = InetAddress.getByName("75.143.75.136"); //Get IP address of host
-      	Socket clientSocket = new Socket(host, 6788); //port number 
+		InetAddress host = InetAddress.getByName("24.214.242.190"); //Get IP address of host
+      	Socket clientSocket = new Socket(host, 10004); //port number 
       	DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
 		DataInputStream inFromServer = new DataInputStream(clientSocket.getInputStream());
 		
-		FileWriter writer = new FileWriter("results1_100mb_sender_DAS.txt");
+		FileWriter writer = new FileWriter("results_100mb.txt");
 		
 		byte [] sendData = new byte[8192]; //packet size
      	int numTimes = 1; //number of times to send file
@@ -31,13 +31,13 @@ public class sender {
 		
 		while (true)
       	{
-			
+			startTime = System.currentTimeMillis();
 			if (fileLength < 8192) 
 				numBytes = fin.read(sendData, 0, fileLength);
 			else 
 				numBytes = fin.read(sendData, 0, 8192);
 
-			startTime = System.currentTimeMillis();
+			
 			while(numBytes != -1)
 			{
 				 outToServer.write(sendData, 0, numBytes);
@@ -56,7 +56,7 @@ public class sender {
 			
           	if(numTimes == 5)break;
 			numTimes++;
-          	clientSocket = new Socket(host, 6788);
+          	clientSocket = new Socket(host, 10004);
           	outToServer = new DataOutputStream(clientSocket.getOutputStream());
           	fs = new File("100mb.txt");
           	fin = new FileInputStream(fs);
